@@ -19,7 +19,7 @@ const UsersSwitch = props => {
                     </View>
                     <View style={styles.button}>
                         <Button color={Colors.primary} title = "USER" onPress={() => {
-                            props.navigation.navigate({routeName:'map'}); 
+                            props.navigation.navigate({routeName:'mapInput'}); 
                             }}/>
                     </View>
                 </View>
