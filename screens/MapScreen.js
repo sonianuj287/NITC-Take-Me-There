@@ -6,7 +6,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoding';
 
 
-Geocoder.init("AIzaSyAeicbYZGwVCg70Ld-9mMDhUn1a0q4FPBo");
+Geocoder.init(""); //<-- enter you google api key here
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -15,7 +15,7 @@ const LONGITUDE = -122.4053769;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
  
-const GOOGLE_MAPS_APIKEY = 'AIzaSyAeicbYZGwVCg70Ld-9mMDhUn1a0q4FPBo';
+const GOOGLE_MAPS_APIKEY = ''; //<-- enter you google api key here
 
 
 class MapScreen extends Component {
