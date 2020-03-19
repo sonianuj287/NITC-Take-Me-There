@@ -6,16 +6,18 @@ import Login from '../screens/Login';
 import Register from '../screens/Register';
 import DashBoard from '../screens/DashBoard';
 import UsersSwitch from '../screens/UsersSwitch';
-import mapScreen from '../screens/MapScreen';
+import MapScreen from '../screens/MapScreen';
 import BusSchedule from '../screens/BusSchedule';
+import MapInputScreen from '../screens/MapInputScreen';
 
 const DashNavigator = createStackNavigator({
     UsersSwitch:UsersSwitch,
     Login: Login,
     Register: Register,
     DashBoard: DashBoard,
-    map: mapScreen,
-    bus: BusSchedule
+    map: MapScreen,
+    bus: BusSchedule,
+    mapInput: MapInputScreen
 });
 
 export default createAppContainer(DashNavigator);
