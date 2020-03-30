@@ -9,6 +9,8 @@ import UsersSwitch from '../screens/UsersSwitch';
 import MapScreen from '../screens/MapScreen';
 import BusSchedule from '../screens/BusSchedule';
 import MapInputScreen from '../screens/MapInputScreen';
+import StaticImageScreen from '../screens/StaticImageScreen';
+import EditBusSchedule from '../screens/EditBusSchedule';
 
 const DashNavigator = createStackNavigator({
     UsersSwitch:UsersSwitch,
@@ -17,7 +19,9 @@ const DashNavigator = createStackNavigator({
     DashBoard: DashBoard,
     map: MapScreen,
     bus: BusSchedule,
-    mapInput: MapInputScreen
+    mapInput: MapInputScreen,
+    image: StaticImageScreen,
+    editbus: EditBusSchedule
 });
 
 export default createAppContainer(DashNavigator);
