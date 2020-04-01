@@ -1,11 +1,45 @@
-import React from 'react';
-import {View,Text, StyleSheet, Button,TextInput } from 'react-native';
+import React, { useState } from 'react';
+import {View,Text, StyleSheet, Button,TextInput,Alert } from 'react-native';
 
 import Card from '../components/Card';
 import Colors from '../Constants/Color';
 import Header from '../components/Header';
 
+
 const Login = props => {
+    const[mail,setMail] = useState('');
+    const[pass,setPass] = useState('');
+
+    const showAlert = () => {  
+        Alert.alert(  
+            'Wrong Login email or password',
+            'please enter a valid one',              
+            [   
+                {text: 'OK'} 
+            ]  
+        );  
+    }
+
+    async function select() {
+        try {
+          let response = await fetch('https://fir-test-4dae1.firebaseio.com/user/-M2anbN5BgeswQrSs30P.json');
+          let responseJson = await response.json();
+        // email = responseJson.email;
+        // password = responseJson.password;
+        if(mail == responseJson.email && pass == responseJson.password){
+            props.navigation.navigate({routeName:'DashBoard'})
+        }
+        else{
+            showAlert();
+        }
+            
+          return responseJson.user;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+
     return ( 
     <View>
         <Header title="Login" />
@@ -13,20 +47,13 @@ const Login = props => {
             <Card style={styles.inputContainer}>
                
                 <Text style = {{fontSize:40}}>Mail id</Text> 
-                <TextInput style={styles.input } placeholder="mail id" />
+                <TextInput style={styles.input } placeholder="mail id" onChangeText={text => setMail(text)} />
                 <Text style = {{fontSize:40}} >Password</Text>
-                <TextInput style={styles.input } placeholder="password" />
+                <TextInput style={styles.input } placeholder="password" onChangeText={(text)=>{setPass(text)}} secureTextEntry={true}/>
                
                 <View style={styles.buttonContainer}> 
                     <View style={styles.button}>
-                        <Button color={Colors.primary} title = "Login" onPress={() =>{
-                            props.navigation.navigate({routeName:'DashBoard'})
-                        } }/>
-                    </View>
-                    <View style={styles.button}>
-                        <Button color={Colors.primary} title = "Register" onPress={() => {
-                            props.navigation.navigate({routeName:'Register'}); 
-                            }}/>
+                        <Button color={Colors.primary} title = "Login" onPress={()=>{select()}}/>
                     </View>
                 </View>
             </Card>

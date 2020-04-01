@@ -35,17 +35,7 @@ async function select() {
     }
   }
 
-// const select = () =>{
-    
-//         fetch('https://iou-tracker-c3a72.firebaseio.com/user.json')
-//     .then((response) => response.json())
-//     .then((responseJson) => {
-//       return responseJson.movies;
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// };
+
 
 const Register = props => {
     const [name,setName] = useState('');
