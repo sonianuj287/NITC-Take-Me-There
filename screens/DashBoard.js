@@ -16,7 +16,7 @@ const DashBoard = props => {
                 <Button title="Edit Bus Schedule"  onPress={()=>{props.navigation.navigate('editbus')}}  color = "#12356e" />
                 </View>
                 <View style={styles.butt}>
-                <Button title="Edit Path"   color = "#12356e" /></View>
+                <Button title="Edit Path"   color = "#12356e" onPress={()=>{props.navigation.navigate('editpath')}}/></View>
             </View>
             </Card>
             <View style = {styles.button} >

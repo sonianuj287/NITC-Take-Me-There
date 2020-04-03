@@ -24,32 +24,17 @@ class Example extends Component {
     var tlt=0;
     var tlg=0;
 
-    this.state = {
-      coordinates: [
-        {
-          latitude: flt,
-          longitude: flg,
-        },
-        {
-          latitude: tlt,
-          longitude: tlg,
-        },
-      ],
-    };
-
-
     if(f == "")
       f = t;
     if(t == "")
       t = f;
 
     if(tr == "Vehicle"){
-
-    // if(f == "Current Location"){
-    //     flt = 11.321740;
-    //     flg = 75.934109;
-    //   }
-
+      
+    if(f == "Current Location"){
+        flt = this.state.lt;
+        flg = this.state.lt;
+    }
     if(f == "Main Building NIT Calicut"){
       flt = 11.321740;
       flg = 75.934109;
@@ -106,10 +91,33 @@ class Example extends Component {
 
 
 
-
+    this.state = {
+      lt:0,
+      lg:0,
+      coordinates: [
+        {
+          latitude: flt,
+          longitude: flg,
+        },
+        {
+          latitude: tlt,
+          longitude: tlg,
+        },
+      ],
+    };
 
     this.mapView = null;
+    // console.log(this.state.lt);
   }
+
+  async componentDidMount(){
+    const location = await Location.getCurrentPositionAsync({});
+    const co = location.coords; 
+    this.setState({lt:co.latitude});
+    this.setState({lg:co.longitude});
+    console.log(location);
+  };
+  
 
   onMapPress = (e) => {
     this.setState({
@@ -123,6 +131,7 @@ class Example extends Component {
   
 
   render() {
+    var mapStyle=[{"elementType": "geometry", "stylers": [{"color": "#242f3e"}]},{"elementType": "labels.text.fill","stylers": [{"color": "#746855"}]},{"elementType": "labels.text.stroke","stylers": [{"color": "#242f3e"}]},{"featureType": "administrative.locality","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},{"featureType": "poi","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},{"featureType": "poi.park","elementType": "geometry","stylers": [{"color": "#263c3f"}]},{"featureType": "poi.park","elementType": "labels.text.fill","stylers": [{"color": "#6b9a76"}]},{"featureType": "road","elementType": "geometry","stylers": [{"color": "#38414e"}]},{"featureType": "road","elementType": "geometry.stroke","stylers": [{"color": "#212a37"}]},{"featureType": "road","elementType": "labels.text.fill","stylers": [{"color": "#9ca5b3"}]},{"featureType": "road.highway","elementType": "geometry","stylers": [{"color": "#746855"}]},{"featureType": "road.highway","elementType": "geometry.stroke","stylers": [{"color": "#1f2835"}]},{"featureType": "road.highway","elementType": "labels.text.fill","stylers": [{"color": "#f3d19c"}]},{"featureType": "transit","elementType": "geometry","stylers": [{"color": "#2f3948"}]},{"featureType": "transit.station","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},{"featureType": "water","elementType": "geometry","stylers": [{"color": "#17263c"}]},{"featureType": "water","elementType": "labels.text.fill","stylers": [{"color": "#515c6d"}]},{"featureType": "water","elementType": "labels.text.stroke","stylers": [{"color": "#17263c"}]}];
     return (
       <MapView
         initialRegion={{
@@ -134,7 +143,10 @@ class Example extends Component {
         style={StyleSheet.absoluteFill}
         ref={c => this.mapView = c}
         onPress={this.onMapPress}
+        customMapStyle={mapStyle}
+        showsUserLocation={true}
       >
+        
         {this.state.coordinates.map((coordinate, index) =>
           <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
         )}
