@@ -95,12 +95,12 @@ export default class About extends Component {
                 <Text style = {{fontSize:20,fontWeight:"bold"}}>                              Nitc Take Me There</Text> 
                 <Text style = {{fontSize:20,fontWeight:"bold"}}>                                     Version 1.0</Text> 
                 <Text></Text>
-                <Text style = {{fontSize:15,fontWeight:"bold"}}>                                                         Contact:</Text>
+                <Text style = {{fontSize:15,fontWeight:"bold"}}>                                                        Contacts:</Text>
                 <Text style = {{fontSize:20,fontWeight:"bold"}}>                           sonianuj287@gmail.com</Text>
-                <Text style = {{fontSize:20,fontWeight:"bold"}}>                               googoo@gmail.com</Text>
-                <Text style = {{fontSize:20,fontWeight:"bold"}}>                              sidmuth@gmail.com</Text>
-                <Text style = {{fontSize:20,fontWeight:"bold"}}>                               chacha@gmail.com</Text>
-                <Text style = {{fontSize:20,fontWeight:"bold"}}>                           zoohiKumari@gmail.com</Text>
+                <Text style = {{fontSize:20,fontWeight:"bold"}}>                                rashvi@gmail.com</Text>
+                <Text style = {{fontSize:20,fontWeight:"bold"}}>                            siddhartha@gmail.com</Text>
+                <Text style = {{fontSize:20,fontWeight:"bold"}}>                            Deepanshu@gmail.com</Text>
+                <Text style = {{fontSize:20,fontWeight:"bold"}}>                            juhiKumari@gmail.com</Text>
                 </View>
             </Card>
         </View>

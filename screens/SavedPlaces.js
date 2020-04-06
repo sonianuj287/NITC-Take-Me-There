@@ -123,7 +123,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.heading}>SQLite Example</Text>
+        <Text style={styles.heading}>Saved Places</Text>
         <View style={styles.flexRow}>
           <TextInput
             onChangeText={text => this.setState({ text })}

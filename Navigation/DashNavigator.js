@@ -16,6 +16,8 @@ import ExploreCampus from '../screens/ExploreCampus';
 import SavedPlaces from '../screens/SavedPlaces';
 import CurrentLocation from '../screens/CurrentLocation';
 import ShareLocation from '../screens/ShareLocation';
+import EditPath from '../screens/EditPath';
+
 
 const DashNavigator = createStackNavigator({
     UsersSwitch:UsersSwitch,
@@ -31,7 +33,8 @@ const DashNavigator = createStackNavigator({
     explore:ExploreCampus,
     save:SavedPlaces,
     location:CurrentLocation,
-    share:ShareLocation
+    share:ShareLocation,
+    editpath:EditPath
 });
 
 export default createAppContainer(DashNavigator);
