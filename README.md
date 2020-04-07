@@ -1,3 +1,3 @@
+NITC Take Me There
+An app which helps you to ...blah blah blah....
 
-# NITC-Take-Me-There
-This app is developed using react-native. 
