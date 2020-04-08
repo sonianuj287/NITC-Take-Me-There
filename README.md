@@ -3,7 +3,7 @@
 Software Engineering Lab Project
 
 </br>
-NITC Take Me There is an adroid application developed using React Native, javascript, JSX, and Google Firebase. This app is made exclusively for NITC students so that they can use this get optimized path between two locations which are inside NITC campus, besides that one can Explore all the similar kinds of building with a single click. This app also allows the user to share its current location to their friends via any messaging apps and to save their current location to look back in future. Also the app embedded with the functionality of NITC official Bus Schedules, timing and route map. The app's oriented audience are those people who came NIT Calicut for Admission purpose, people who came to be the part of NITC's fest (tathva, ragam, etc.) and for the regular students and staff.
+NITC Take Me There is an android application developed using React Native, javascript, JSX, and Google Firebase. This app is made exclusively for NITC students so that they can use this get optimized path between two locations which are inside NITC campus, besides that one can Explore all the similar kinds of building with a single click. This app also allows the user to share its current location to their friends via any messaging apps and to save their current location to look back in future. Also the app embedded with the functionality of NITC official Bus Schedules, timing and route map. The app's oriented audience are those people who came NIT Calicut for Admission purpose, people who came to be the part of NITC's fest (tathva, ragam, etc.) and for the regular students and staff.
 
 </br>
 </br>
