@@ -1,0 +1,363 @@
+// import React, { useState } from 'react';
+// import { FlatList,StyleSheet,Text, TextInput, View, Button,Alert } from 'react-native';
+
+// import * as SQLite from 'expo-sqlite';
+
+// const db = SQLite.openDatabase("final.db");
+
+// export default class mythtest extends React.Component {
+
+
+
+//     constructor(props) {
+//         super(props);
+
+//         this.state = { 
+//           data:[], 
+//             Location: '',
+//             id:'' 
+//         };  
+
+//         db.transaction(tx => {
+//             tx.executeSql(
+//               "create table if not exists SaveLocations (id integer primary key not null,Locations text);"
+//             );
+//           });
+
+
+//       }
+
+
+
+
+
+//     fun1(text) {
+
+//       db.transaction(tx => {
+//       tx.executeSql("insert into SaveLocations (Locations) values (?)", [text]);   
+      
+//     });
+// }
+
+// delete(text) {
+
+
+// db.transaction(tx => {
+   
+// tx.executeSql(
+//   'DELETE FROM  Savelocations where id=?',
+//   [text],
+//   (tx, results) => {
+//     console.log('Results', results.rowsAffected);
+//     if (results.rowsAffected > 0) {
+//       Alert.alert(
+//         'Success',
+//         'Location deleted successfully',
+//         [
+//           {
+//             text: 'Ok',
+//           },
+//         ],
+//         { cancelable: false }
+//       );
+//     } else {
+//       alert('Please insert a valid User Id');
+//     }
+//   }
+// );
+// });
+// }
+
+
+// display() {
+
+//   db.transaction(tx => {
+//     tx.executeSql('SELECT * FROM SaveLocations', [], (tx, results) => {
+//       var temp = [];
+//       for (let i = 0; i < results.rows.length; ++i) {
+//         temp.push(results.rows.item(i));
+//       }
+//       //console.log(temp)
+//       this.setState({
+//         data: temp,
+//       });
+//     });
+//   });
+
+
+
+//  }
+
+
+
+// render(){
+
+
+//   return (
+//     <View style = {styles.container}>
+//       <View>
+//          <TextInput style={styles.input } onChangeText={Location => this.setState({ Location })}   placeholder="Enter the text.. "  />
+//          <Button  title="Insert"  onPress={ this.fun1.bind(this,  this.state.Location) }/>
+  
+  
+  
+  
+//          <FlatList
+//           data={this.state.data}
+//           ItemSeparatorComponent={this.ListViewItemSeparator}
+//           keyExtractor={(item, index) => index.toString()}
+//           renderItem={({ item }) => (
+//             <View key={item.Locations} style={{ backgroundColor: 'yellow', padding: 30 }}>
+//               <Text>Id: {item.id}</Text>
+//               <Text>Name: {item.Locations}</Text>
+//             </View>
+//           )}
+//         />
+  
+//   <TextInput style={styles.input } onChangeText={id => this.setState({ id })}   placeholder="id "  />
+       
+//   <Button style={styles.button} title="Delete"  onPress={ this.delete.bind(this,this.state.id) }/>
+  
+//   <Button style={styles.button} title="Display" onPress={ this.display.bind(this) }/>
+
+  
+  
+//          </View>
+//     </View>
+//   );};
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//   flex:1,
+//   justifyContent:'space-evenly',
+//   alignItems:'center',
+//   flexDirection:"row",
+//   backgroundColor:"#ffffff",
+//   //flexWrap:"wrap",
+//   },
+//   input:{
+//     borderWidth:1,
+//     width:140,
+//     borderColor:'#72121b',
+//     height:40,
+//     margin:10,
+//     fontSize:20,
+//     padding:10,
+
+//   },
+
+
+
+// });
+
+
+
+import React, { useState } from 'react';
+import { FlatList,StyleSheet,Text, TextInput, View, Button,Alert } from 'react-native';
+import * as SQLite from 'expo-sqlite';
+import Geocoder from 'react-native-geocoding';
+import * as Location from 'expo-location';
+
+const db = SQLite.openDatabase("finlum.db");
+
+export default class mythtest extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { 
+          data:[], 
+            Location: '',
+            id:'' ,
+            mapx:"",
+            mapy:"",
+            lat:0,
+            lng:0
+        };  
+
+        db.transaction(tx => {
+            tx.executeSql(
+              "create table if not exists SaveLocations (id integer primary key not null,Locations text,Latitude text,Longitude text);"
+            );
+          });
+      }
+
+      async componentDidMount(){
+
+        this.setState({Location:"Khopcha"});
+        this.setState({lat:"rin"});
+        this.setState({lng:"di"});
+       
+
+        const location = await Location.getCurrentPositionAsync({});
+        const co = location.coords; 
+        this.setState({lat:location.coords.latitude});
+        this.setState({lng:location.coords.longitude});
+        const response = await Geocoder.from(location.coords.latitude,location.coords.longitude);
+        const address = response.results[0].formatted_address;
+        var temp = address+","+location.coords.latitude+","+location.coords.longitude;
+        //this.setState({add:address}); // current Location
+        this.setState({Location:address});
+
+        this.setState({lat:"rin"});
+        this.setState({lng:"di"});
+        console.log(text,text1,text2)
+    
+        // console.log(address+","+location.coords.latitude+","+location.coords.longitude);
+      };
+
+
+
+    fun1(text, text1, text2) {
+
+      console.log(text,text1,text2)
+      db.transaction(tx => {
+      tx.executeSql("insert into SaveLocations (Locations,Latitude,Longitude) values (?,?,?)", [text,text1,text2]);   
+
+    });
+}
+
+delete(text) {
+
+
+db.transaction(tx => {
+
+tx.executeSql(
+  'DELETE FROM  Savelocations where id=?',
+  [text],
+  (tx, results) => {
+    console.log('Results', results.rowsAffected);
+    if (results.rowsAffected > 0) {
+      Alert.alert(
+        'Success',
+        'Location deleted successfully',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      alert('Please insert a valid User Id');
+    }
+  }
+);
+});
+}
+
+displayOne(text) {
+
+
+  db.transaction(tx => {
+  
+  tx.executeSql(
+    'SELECT * FROM  Savelocations where id=?',
+    [text],
+    (tx, results) => {
+      var temp = "";
+      temp = results.rows;
+      console.log(temp);
+      console.log(results.rows.item(0));
+      this.setState({mapx:results.rows.item(0).Latitude}),
+      this.setState({mapy:results.rows.item(0).Longitude});
+
+    //  console.log(this.state.lat);
+    }
+  );
+  });
+  }
+
+
+
+
+display() {
+
+  db.transaction(tx => {
+    tx.executeSql('SELECT * FROM SaveLocations', [], (tx, results) => {
+      var temp = [];
+      for (let i = 0; i < results.rows.length; ++i) {
+        temp.push(results.rows.item(i));
+      }
+      //console.log(temp)
+      this.setState({
+        data: temp,
+      });
+    });
+  });
+
+
+
+ }
+
+
+
+render(){
+var address = this.state.add;
+
+  return (
+    <View style = {styles.container}>
+      <View>
+        <View style={{height:"20%"}}>
+        </View>
+  <TextInput style={{width:"90%",borderWidth:1,borderColor:'black',}} onChangeText={Location => this.setState({ Location })}  placeholder="Enter the text.. ">{this.state.Location}</TextInput>
+    {/* <Button title="current Location" onPress={this.setState({Location:this.state.add})}/> */}
+         <Button  title="Save Current Location"  onPress={ this.fun1.bind(this,  this.state.Location,this.state.lat,this.state.lng)}/>
+
+
+
+
+         <FlatList
+          data={this.state.data}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View key={item.Locations} style={{ backgroundColor: 'yellow', padding: 30 }}>
+              <Text>Id: {item.id}</Text>
+              <Text>Name: {item.Locations}</Text>
+              <Text>Lat: {item.Latitude}</Text>
+              <Text>Lng: {item.Longitude}</Text>
+            </View>
+          )}
+        />
+
+          <Text>){this.state.mapx} {this.state.mapy}</Text>
+     
+  <TextInput style={styles.input } onChangeText={id => this.setState({ id })}   placeholder="id "  />
+
+  <Button style={styles.button} title="Delete"  onPress={ this.delete.bind(this,this.state.id) }/>
+  <Button style={styles.button} title="Show on Map"  onPress={ this.displayOne.bind(this,this.state.id) }/>
+          
+
+  <Button style={styles.button} title="Display" onPress={ this.display.bind(this) }/>
+
+
+
+         </View>
+    </View>
+  );};
+}
+
+const styles = StyleSheet.create({
+  container: {
+  flex:1,
+  justifyContent:'space-evenly',
+  alignItems:'center',
+  flexDirection:"row",
+  backgroundColor:"#ffffff",
+  //flexWrap:"wrap",
+  },
+  input:{
+    borderWidth:1,
+    width:140,
+    borderColor:'#72121b',
+    height:40,
+    margin:10,
+    fontSize:20,
+    padding:10,
+
+  },
+
+
+
+});
