@@ -10,7 +10,7 @@ NITC Take Me There is an android application developed using React Native, javas
 </br>
 <p>
   <img src="https://github.com/sonianuj287/NITC-Take-Me-There/blob/master/screen1.jpeg" width="280" height="550">
-  <img src="https://github.com/sonianuj287/NITC-Take-Me-There/blob/master/screen2.jpeg" width="280" height="550">
+  <img src="https://github.com/sonianuj287/NITC-Take-Me-There/blob/master/screen2.1.jpeg" width="280" height="550">
   <img src="https://github.com/sonianuj287/NITC-Take-Me-There/blob/master/screen3.jpeg" width="280" height="550">
   <img src="https://github.com/sonianuj287/NITC-Take-Me-There/blob/master/screen4.jpeg" width="280" height="550">
   <img src="https://github.com/sonianuj287/NITC-Take-Me-There/blob/master/screen5.jpeg" width="280" height="550">
