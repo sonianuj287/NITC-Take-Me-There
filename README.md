@@ -7,6 +7,32 @@ NITC Take Me There is an android application developed using React Native, javas
 
 </br>
 </br>
+<h4>Main Feature :</h4>
+<ul>
+  <li><h6>Travel Mode:<h6><br/>
+    This app contain travel model mode i.e. by walk or vechicle. 
+    </li>
+     <li><h6>Bus Schedule:<h6><br/>
+    user can able to catch your bus with view bus schedule time.
+    </li>
+        <li><h6>Find route:<h6><br/>
+   Find the best optimal path.
+    </li>
+           <li><h6>Share Location:<h6><br/>
+   usre can able to share current location via any applicatins. 
+    </li>
+     <li><h6>Current Location:<h6><br/>
+    With this feature user can share and track his/her current location. 
+    </li>
+        <li><h6>Explore Nitc campus:<h6><br/>
+     Discover places and explore nitc campus. It cantain categories like department,event sport ,food ,hostel etc.
+    </li>
+  </ul>
+   <li><h6>Save Places:<h6><br/>
+     user can Save its favourite places in order to visit them in future. 
+    </li>
+</br>
+</br>
 </br>
 <p>
   <img src="https://github.com/sonianuj287/NITC-Take-Me-There/blob/master/screen1.jpeg" width="280" height="550">
