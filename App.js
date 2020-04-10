@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import navigator from './Navigation/DashNavigator';
+import opencage from 'opencage-api-client';
+
 import {
   StyleSheet,
   View,
