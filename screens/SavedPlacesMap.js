@@ -8,44 +8,31 @@ import Card from '../components/Card';
  
 Geocoder.init("AIzaSyAeicbYZGwVCg70Ld-9mMDhUn1a0q4FPBo");
 
-export default class App extends React.Component {
+export default class SavedPlacesMap extends React.Component {
   constructor(props) {  
-    super(props);  
+    super(props); 
     this.state = {  
         loc: null,
-        lt:0,
-        lg:0,
+        lt:props.navigation.state.params.x,
+        lg:props.navigation.state.params.y,
         url:"https://expo.io/@cupcake287/NITC-Take-me-There",
         add:""
-    };  
+    };
 }
-async componentDidMount(){
-    const location = await Location.getCurrentPositionAsync({});
-    const co = location.coords; 
-    this.setState({lt:co.latitude});
-    this.setState({lg:co.longitude});
-    this.setState({loc:location.coords});
-    const response = await Geocoder.from(location.coords.latitude,location.coords.longitude);
-    const address = response.results[0].formatted_address;
-    this.setState({add:address});
-  };
+
+
+
+
+
 
 
 
   onRegionChange(region) {
     this.setState({ region });
   }
-  render() {
-    const shareOptions = {
-        title: 'Location Sharing',
-        message: 'join me on NITC TMT,an awesome digitized Map customized for NITC.You can get bus Schedules & exploring features on just a tap:-'+this.state.add+' ('+this.state.url+')',
-        url: 'https://expo.io/@cupcake287/NITC-Take-me-There',
-        subject: 'NITC Take-Me-There Location Sharing'
-      };
-    const onSharePress = () => Share.share(shareOptions);
+  render() {    
 
     var mapStyle=[{"elementType": "geometry", "stylers": [{"color": "#242f3e"}]},{"elementType": "labels.text.fill","stylers": [{"color": "#746855"}]},{"elementType": "labels.text.stroke","stylers": [{"color": "#242f3e"}]},{"featureType": "administrative.locality","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},{"featureType": "poi","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},{"featureType": "poi.park","elementType": "geometry","stylers": [{"color": "#263c3f"}]},{"featureType": "poi.park","elementType": "labels.text.fill","stylers": [{"color": "#6b9a76"}]},{"featureType": "road","elementType": "geometry","stylers": [{"color": "#38414e"}]},{"featureType": "road","elementType": "geometry.stroke","stylers": [{"color": "#212a37"}]},{"featureType": "road","elementType": "labels.text.fill","stylers": [{"color": "#9ca5b3"}]},{"featureType": "road.highway","elementType": "geometry","stylers": [{"color": "#746855"}]},{"featureType": "road.highway","elementType": "geometry.stroke","stylers": [{"color": "#1f2835"}]},{"featureType": "road.highway","elementType": "labels.text.fill","stylers": [{"color": "#f3d19c"}]},{"featureType": "transit","elementType": "geometry","stylers": [{"color": "#2f3948"}]},{"featureType": "transit.station","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},{"featureType": "water","elementType": "geometry","stylers": [{"color": "#17263c"}]},{"featureType": "water","elementType": "labels.text.fill","stylers": [{"color": "#515c6d"}]},{"featureType": "water","elementType": "labels.text.stroke","stylers": [{"color": "#17263c"}]}];
-
     return (
       <View style={styles.container}>
         <MapView
@@ -65,13 +52,12 @@ async componentDidMount(){
               longitude: this.state.lg,
             }}
             onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
-            title={'Your Current location'}
-            description={this.state.add}
+            title={'Your Saved location'}
+            description={"this.state.add"}
           />
         </MapView>
         <Card style={styles.inputContainer}>
-            <Text style={{fontSize:20,fontWeight:"bold"}}>{this.state.add}</Text>
-            <Button color="green" title="Share" onPress={onSharePress}/>
+            <Button color="green" title="Back" onPress={()=>{this.props.navigation.navigate('SavedPlaces')}}/>
         </Card>
       </View>
     );

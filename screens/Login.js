@@ -41,70 +41,52 @@ const Login = props => {
 
 
     return ( 
-    <View>
-        <Header title="Login" />
-        <View style={styles.screen}>
+    <View style={styles.container}>
             <Card style={styles.inputContainer}>
                
-                <Text style = {{fontSize:40}}>Mail id</Text> 
-                <TextInput style={styles.input } placeholder="mail id" onChangeText={text => setMail(text)} />
-                <Text style = {{fontSize:40}} >Password</Text>
-                <TextInput style={styles.input } placeholder="password" onChangeText={(text)=>{setPass(text)}} secureTextEntry={true}/>
-               
-                <View style={styles.buttonContainer}> 
-                    <View style={styles.button}>
-                        <Button color={Colors.primary} title = "Login" onPress={()=>{select()}}/>
-                    </View>
-                </View>
+                <Text style = {{fontSize:40,fontWeight:"bold"}}>Mail id</Text> 
+                <TextInput style={{height:40,fontSize:20}} placeholder="Enter mail id.." onChangeText={text => setMail(text)} />
+                <Text style = {{fontSize:40,fontWeight:"bold"}} >Password</Text>
+                <TextInput style={{height:40,fontSize:20}} placeholder="Enter password.." onChangeText={(text)=>{setPass(text)}} secureTextEntry={true}/>
+                <Text></Text>
+                <Text></Text>
+                <Text></Text>
+                <Button color="green" title = "Login" onPress={()=>{select()}}/>
             </Card>
-        </View>
+            <Card style={styles.inputContainer1}>
+                <Button color="green" title = "Back" onPress={()=>{props.navigation.navigate('Welcome')}}/>
+            </Card>
     </View>
     );
 };
 
 const styles = StyleSheet.create({
-    screen:{
-       
-        padding: 10,
-        alignItems: 'center'
-    },
-    input:{
-        borderBottomColor:'black',
-        borderWidth:1,
-        width:'100%',
-        height:50,
-       marginVertical:10,
-        fontSize:20,
-        padding:10
-    },
-    title:{
-        fontSize:50,
-        marginVertical: 10,
+    container: {
+        position:'absolute',
+        top:0,
+        left:0,
+        right:0,
+        bottom:0,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        backgroundColor:"black",
+        height:"100%",
     },
     inputContainer: {
-        width:300,
-        height:400,
-        maxWidth: '80%',
-        fontSize:20,
-       
-       
-    },
-    buttonContainer: {
-        
-        width:'100%',
-        justifyContent: 'space-around',
-        paddingHorizontal:15,
-        paddingBottom:10,
-        alignItems:'center'
-       
-    },
-    button:{
-        width:100,
-        color:'black',
-        justifyContent:'space-around',
-        paddingTop:30
-    
-    }
+      width:350,
+      height:300,
+      maxWidth: '90%',
+      fontSize:20,
+      marginBottom:"50%"     
+  },
+  inputContainer1: {
+    width:350,
+    height:110,
+    maxWidth: '80%',
+    fontSize:20,
+   
+   
+}
 });
 
 export default Login;

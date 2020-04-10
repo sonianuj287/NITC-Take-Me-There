@@ -1,233 +1,216 @@
-// import React,{Component,useState} from 'react';
-// import {Platform,Text,View,StyleSheet} from 'react-native';
-// import Constants from 'expo-constants';
-// import * as Location from 'expo-location';
-// import * as Permissions from 'expo-permissions';
 
-// const SavedPlaces = () => {
-//     const[loc,setLoc] = useState('');
-
-//     async function getLocationAsync(){
-
-//         let location = await Location.getCurrentPositionAsync({});
-//         setLoc(location.coords);
-//     }
-
-
-//     getLocationAsync();
-//     return(
-//         <View style={styles.container}>
-//           <Text style={styles.paragraph}>{loc.latitude}</Text>
-//           <Text style={styles.paragraph}>{loc.longitude}</Text>
-//         </View>
-//     )
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//       flex: 1,
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//       paddingTop: Constants.statusBarHeight,
-//       backgroundColor: '#73728a',
-//     },
-//     paragraph: {
-//       margin: 24,
-//       fontSize: 18,
-//       textAlign: 'center',
-//     },
-//   });
-
-// export default SavedPlaces;
-
-
-
-
-import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity
-} from "react-native";
-import Constants from "expo-constants";
+import React, { useState } from 'react';
+import { FlatList,StyleSheet,Text, TextInput, View, Button,Alert } from 'react-native';
 import * as SQLite from 'expo-sqlite';
+import Geocoder from 'react-native-geocoding';
+import * as Location from 'expo-location';
+import Card from '../components/Card';
 
-const db = SQLite.openDatabase("def.db");
+const db = SQLite.openDatabase("finz.db");
 
-class Items extends React.Component {
-  state = {
-    items: null
-  };
+export default class mythtest extends React.Component {
+    constructor(props) {
+        super(props);
 
-  componentDidMount() {
-    this.update();
-  }
+        this.state = { 
+          data:[], 
+            Location: '',
+            id:'' ,
+            mapx:"",
+            mapy:"",
+            lat:0,
+            lng:0,
+            op:340
+        };  
 
-  render() {
-    const { done: doneHeading } = this.props;
-    const { items } = this.state;
-    const heading = doneHeading ? "Completed" : "Todo";
+        db.transaction(tx => {
+            tx.executeSql(
+              "create table if not exists SaveLocations (id integer primary key not null,Locations text,Latitude text,Longitude text);"
+            );
+          });
+      }
 
-    if (items === null || items.length === 0) {
-      return null;
-    }
+      async componentDidMount(){
+        const location = await Location.getCurrentPositionAsync({});
+        const co = location.coords; 
+        this.setState({lat:location.coords.latitude});
+        this.setState({lng:location.coords.longitude});
+        const response = await Geocoder.from(location.coords.latitude,location.coords.longitude);
+        const address = response.results[0].formatted_address;
+        var temp = address+","+location.coords.latitude+","+location.coords.longitude;
+        this.setState({Location:address});
+        this.setState({lat:location.coords.latitude});
+        this.setState({lng:location.coords.longitude});
+        console.log(text,text1,text2)
+      };
 
-    return (
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionHeading}>{heading}</Text>
-        {items.map(({ id, done, value }) => (
-          <TouchableOpacity
-            key={id}
-            onPress={() => this.props.onPressItem && this.props.onPressItem(id)}
-            style={{
-              backgroundColor: done ? "#1c9963" : "#fff",
-              borderColor: "#000",
-              borderWidth: 1,
-              padding: 8
-            }}
-          >
-            <Text style={{ color: done ? "#fff" : "#000" }}>{value}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  }
 
-  update() {
-    db.transaction(tx => {
-      tx.executeSql(
-        `select * from items where done = ?;`,
-        [this.props.done ? 1 : 0],
-        (_, { rows: { _array } }) => this.setState({ items: _array })
-      );
+
+    fun1(text, text1, text2) {
+      console.log(text,text1,text2)
+      db.transaction(tx => {
+      tx.executeSql("insert into SaveLocations (Locations,Latitude,Longitude) values (?,?,?)", [text,text1,text2]);   
+
     });
-  }
 }
 
-export default class App extends React.Component {
-  state = {
-    text: null
-  };
-
-  componentDidMount() {
-    db.transaction(tx => {
-      tx.executeSql(
-        "create table if not exists items (id integer primary key not null, done int, value text);"
+delete(text) {
+db.transaction(tx => {
+tx.executeSql(
+  'DELETE FROM  Savelocations where id=?',
+  [text],
+  (tx, results) => {
+    console.log('Results', results.rowsAffected);
+    if (results.rowsAffected > 0) {
+      Alert.alert(
+        'Success',
+        'Location deleted successfully',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
       );
-    });
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.heading}>Saved Places</Text>
-        <View style={styles.flexRow}>
-          <TextInput
-            onChangeText={text => this.setState({ text })}
-            onSubmitEditing={() => {
-              this.add(this.state.text);
-              this.setState({ text: null });
-            }}
-            placeholder="what do you need to do?"
-            style={styles.input}
-            value={this.state.text}
-          />
-        </View>
-        <ScrollView style={styles.listArea}>
-          <Items
-            done={false}
-            ref={todo => (this.todo = todo)}
-            onPressItem={id =>
-              db.transaction(
-                tx => {
-                  tx.executeSql(`update items set done = 1 where id = ?;`, [
-                    id
-                  ]);
-                },
-                null,
-                this.update
-              )
-            }
-          />
-          <Items
-            done={true}
-            ref={done => (this.done = done)}
-            onPressItem={id =>
-              db.transaction(
-                tx => {
-                  tx.executeSql(`delete from items where id = ?;`, [id]);
-                },
-                null,
-                this.update
-              )
-            }
-          />
-        </ScrollView>
-      </View>
-    );
-  }
-
-  add(text) {
-    // is text empty?
-    if (text === null || text === "") {
-      return false;
+    } else {
+      alert('Please insert a valid User Id');
     }
+  }
+);
+});
+}
 
-    db.transaction(
-      tx => {
-        tx.executeSql("insert into items (done, value) values (0, ?)", [text]);
-        tx.executeSql("select * from items", [], (_, { rows }) =>
-          console.log(JSON.stringify(rows))
-        );
-      },
-      null,
-      this.update
-    );
+displayOne(text) {
+  db.transaction(tx => {
+  tx.executeSql(
+    'SELECT * FROM  Savelocations where id=?',
+    [text],
+    (tx, results) => {
+      var temp = "";
+      temp = results.rows;
+      console.log(temp);
+      console.log(results.rows.item(0));
+      this.setState({mapx:results.rows.item(0).Latitude}),
+      this.setState({mapy:results.rows.item(0).Longitude});
+    }
+  );
+  });
   }
 
-  update = () => {
-    this.todo && this.todo.update();
-    this.done && this.done.update();
-  };
+
+
+
+display() {
+  db.transaction(tx => {
+    tx.executeSql('SELECT * FROM SaveLocations', [], (tx, results) => {
+      var temp = [];
+      for (let i = 0; i < results.rows.length; ++i) {
+        temp.push(results.rows.item(i));
+      }
+      this.setState({
+        data: temp,
+      });
+    });
+  });
+
+
+
+ }
+
+
+
+render(){
+var address = this.state.add;
+var x = this.state.lat;
+var y = this.state.lng;
+
+  return (
+    <View style = {styles.container}>
+      <Card style={styles.inputContainer}>
+        <TextInput style={{width:"100%"}} onChangeText={Location => this.setState({ Location })}  placeholder="Enter the text.. ">{this.state.Location}</TextInput>    
+        <Text></Text>
+         <Button color="green" title="Save Current Location"  onPress={ this.fun1.bind(this,  this.state.Location,this.state.lat,this.state.lng)}/>
+         <Text></Text>
+        <View style={{flexDirection:"row"}}>
+          <View style={{width:"80%"}}>
+         <Button color="green" style={styles.button} title="Display" onPress={ this.display.bind(this) }/>
+         </View>
+         <Text>      </Text>
+         <View style={{width:"15%"}}>
+         <Button  title="s/h" color={this.state.op==0?"green":"red"} onPress={()=>{this.setState({op:this.state.op == 340?0:340})}}/>
+         </View>
+         </View>
+         <Text></Text>
+         <View >
+         <FlatList style={{height:this.state.op,opacity:this.state.op}}
+          data={this.state.data}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View key={item.Locations} style={{ backgroundColor: 'green', padding: 30,height:120 }}>
+              <Text style={{color:"white"}}>Id: {item.id}</Text>
+              <Text style={{color:"white"}}>Name: {item.Locations}</Text>
+            </View>
+          )}
+        />
+        </View>
+        </Card>
+
+  {/* <Text>     {this.state.mapx} {this.state.mapy}</Text> */}
+<Card style={styles.inputContainerback}>
+  <TextInput style={{width:50}} onChangeText={id => this.setState({ id })}   placeholder="Enter Id "  />
+  <Text></Text>
+  <Button color="green" style={styles.button} title="Delete"  onPress={ this.delete.bind(this,this.state.id) } />
+  <Text></Text>
+  <Button color="green" style={styles.button} title="Show on Map"  onPress={ this.displayOne.bind(this,this.state.id)} onPress={()=>{this.props.navigation.navigate('SavedPlacesMap',{x,y}) }} />
+
+  </Card>
+  
+
+
+
+         </View>
+  );};
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    flex: 1,
-    paddingTop: Constants.statusBarHeight
+    position:'absolute',
+    top:0,
+    left:0,
+    right:0,
+    bottom:0,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    backgroundColor:"black",
+    height:"100%",
+},
+  input:{
+    borderWidth:1,
+    width:140,
+    borderColor:'#72121b',
+    height:40,
+    margin:10,
+    fontSize:20,
+    padding:10,
+
   },
-  heading: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  flexRow: {
-    flexDirection: "row"
-  },
-  input: {
-    borderColor: "#4630eb",
-    borderRadius: 4,
-    borderWidth: 1,
-    flex: 1,
-    height: 48,
-    margin: 16,
-    padding: 8
-  },
-  listArea: {
-    backgroundColor: "#f0f0f0",
-    flex: 1,
-    paddingTop: 16
-  },
-  sectionContainer: {
-    marginBottom: 16,
-    marginHorizontal: 16
-  },
-  sectionHeading: {
-    fontSize: 18,
-    marginBottom: 8
-  }
+  inputContainer: {
+    width:350,
+    height:500,
+    maxWidth: '90%',
+    fontSize:20,
+    marginBottom:"20%"     
+},
+inputContainerback: {
+  width:300,
+  height:170,
+  maxWidth: '80%',
+  fontSize:20,
+ 
+ 
+}
+
+
+
 });
