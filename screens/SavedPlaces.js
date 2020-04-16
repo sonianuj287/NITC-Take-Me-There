@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
-import { FlatList,StyleSheet,Text, TextInput, View, Button,Alert } from 'react-native';
+import { FlatList,StyleSheet,Text, TextInput, View, Button,Alert,TouchableOpacity } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import Geocoder from 'react-native-geocoding';
 import * as Location from 'expo-location';
 import Card from '../components/Card';
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {Ionicons,FontAwesome } from '@expo/vector-icons';
 const db = SQLite.openDatabase("finz.db");
 
 export default class mythtest extends React.Component {
@@ -20,7 +21,7 @@ export default class mythtest extends React.Component {
             mapy:"",
             lat:0,
             lng:0,
-            op:340
+            op:270
         };  
 
         db.transaction(tx => {
@@ -127,17 +128,29 @@ var y = this.state.lng;
   return (
     <View style = {styles.container}>
       <Card style={styles.inputContainer}>
-        <TextInput style={{width:"100%"}} onChangeText={Location => this.setState({ Location })}  placeholder="Enter the text.. ">{this.state.Location}</TextInput>    
+        <TextInput style={{width:wp("100%")}} onChangeText={Location => this.setState({ Location })}  placeholder="Enter the text.. ">{this.state.Location}</TextInput>    
         <Text></Text>
          <Button color="green" title="Save Current Location"  onPress={ this.fun1.bind(this,  this.state.Location,this.state.lat,this.state.lng)}/>
          <Text></Text>
         <View style={{flexDirection:"row"}}>
-          <View style={{width:"80%"}}>
+          <View style={{width:wp("65%")}}>
          <Button color="green" style={styles.button} title="Display" onPress={ this.display.bind(this) }/>
          </View>
-         <Text>      </Text>
-         <View style={{width:"15%"}}>
-         <Button  title="s/h" color={this.state.op==0?"green":"red"} onPress={()=>{this.setState({op:this.state.op == 340?0:340})}}/>
+         <Text>    </Text>
+         <View style={{width:wp("15%")}}>
+
+         {/* <Button  title="s/h" color={this.state.op==0?"green":"red"} onPress={()=>{this.setState({op:this.state.op == 270?0:270})}}/> */}
+         {/* <TouchableOpacity style={{flexDirection:"row",backgroundColor:"green",borderRadius:5}} color={this.state.op==0?"green":"red"} onPress={()=>{this.setState({op:this.state.op == 270?0:270})}}>
+                <Text style={{fontSize:20,color:"white"}}>     </Text>
+          <FontAwesome name="eye-slash" size={25} color="white" />
+          </TouchableOpacity> */}
+          <TouchableOpacity>
+                        <FontAwesome name="eye-slash" size={32} color={this.state.op==0?"green":"red"} onPress={()=>{this.setState({op:this.state.op == 270?0:270})}}/>
+          </TouchableOpacity>
+
+
+
+
          </View>
          </View>
          <Text></Text>
@@ -150,6 +163,7 @@ var y = this.state.lng;
             <View key={item.Locations} style={{ backgroundColor: 'green', padding: 30,height:120 }}>
               <Text style={{color:"white"}}>Id: {item.id}</Text>
               <Text style={{color:"white"}}>Name: {item.Locations}</Text>
+              <Text style={{color:"white"}}>______________________________________</Text>
             </View>
           )}
         />
@@ -158,11 +172,11 @@ var y = this.state.lng;
 
   {/* <Text>     {this.state.mapx} {this.state.mapy}</Text> */}
 <Card style={styles.inputContainerback}>
-  <TextInput style={{width:50}} onChangeText={id => this.setState({ id })}   placeholder="Enter Id "  />
+  <TextInput style={{width:50,fontWeight:"bold"}} onChangeText={id => this.setState({ id })}   placeholder="Enter Id "  />
   <Text></Text>
-  <Button color="green" style={styles.button} title="Delete"  onPress={ this.delete.bind(this,this.state.id) } />
+  <Button color="green" style={styles.button} title="Delete"  onPress={ this.delete.bind(this,this.state.id) } disabled={this.state.id==''} />
   <Text></Text>
-  <Button color="green" style={styles.button} title="Show on Map"  onPress={ this.displayOne.bind(this,this.state.id)} onPress={()=>{this.props.navigation.navigate('SavedPlacesMap',{x,y}) }} />
+  <Button color="green" style={styles.button} title="Show on Map"  onPress={ this.displayOne.bind(this,this.state.id)} onPress={()=>{this.props.navigation.navigate('SavedPlacesMap',{x,y}) }} disabled={this.state.id==''}/>
 
   </Card>
   
@@ -183,34 +197,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     backgroundColor:"black",
-    height:"100%",
+    height:hp("100%"),
 },
-  input:{
-    borderWidth:1,
-    width:140,
-    borderColor:'#72121b',
-    height:40,
-    margin:10,
-    fontSize:20,
-    padding:10,
-
+    inputContainer: {
+      width:wp("80%"),
+      height:hp("50%"),
+      fontSize:20,
+      marginBottom:"20%"     
   },
-  inputContainer: {
-    width:350,
-    height:500,
-    maxWidth: '90%',
+  inputContainerback: {
+    width:wp("70%"),
+    height:hp("35%"),
     fontSize:20,
-    marginBottom:"20%"     
-},
-inputContainerback: {
-  width:300,
-  height:170,
-  maxWidth: '80%',
-  fontSize:20,
- 
- 
+   
+   
 }
-
-
-
 });

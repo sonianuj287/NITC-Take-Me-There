@@ -1,186 +1,142 @@
 import React, { useState } from 'react';
-import { View,Text,Button,StyleSheet,TextInput,Image,Dimensions } from 'react-native';
-import {Card} from 'react-native-elements';
-import { Table, Row, Rows } from 'react-native-table-component';
-import ImageViewer from 'react-native-image-zoom-viewer'
+import { FlatList, View,Text,StyleSheet,TextInput,Image,Dimensions } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const BusSchedule = props => {
-    const[t11,setT11] = useState('');
-    const[t12,setT12] = useState('');
-    const[t13,setT13] = useState('');
-    const[t14,setT14] = useState('');
-    const[t15,setT15] = useState('');
-    const[t16,setT16] = useState('');
-    const[t2,setT2] = useState('');
-    const[t3,setT3] = useState('');
+    const[tab,setTable] = useState('');
+    const[tab2,setTable2] = useState('');
 
-    async function wait(ms) {
-      return new Promise(resolve => {
-        setTimeout(resolve, ms);
-      });
+
+    async function retrieve()
+    {
+        try {
+            let response = await fetch('https://fir-test-4dae1.firebaseio.com/sidTab.json');
+            let res = await response.json();
+
+           var temp=[];
+          for (let i = 0; i < res.length; ++i) {
+             temp.push(res[i].split(","));
+          }
+
+              setTable(temp);
+          //  console.log(temp);
+
+            return res.user;
+          } catch (error) {
+            console.error(error);
+          }
+
     }
 
-async function select(){
-  let response;
-  let responseJson;
-  try{
-      response = await fetch('https://fir-test-4dae1.firebaseio.com/Table 11.json');await wait(1000);
-      responseJson = await response.json();
-      setT11(responseJson.Mega1.split(","));
-      response = await fetch('https://fir-test-4dae1.firebaseio.com/Table 12.json');await wait(1000);
-      responseJson = await response.json();
-      setT12(responseJson.Mega2.split(","));
-      response = await fetch('https://fir-test-4dae1.firebaseio.com/Table 13.json');await wait(1000);
-      responseJson = await response.json();
-      setT13(responseJson.Mega3.split(","));
-      response = await fetch('https://fir-test-4dae1.firebaseio.com/Table 14.json');await wait(1000);
-      responseJson = await response.json();
-      setT14(responseJson.Mega4.split(","));
-      response = await fetch('https://fir-test-4dae1.firebaseio.com/Table 15.json');await wait(1000);
-      responseJson = await response.json();
-      setT15(responseJson.Mega5.split(","));
-      response = await fetch('https://fir-test-4dae1.firebaseio.com/Table 16.json');await wait(1000);
-      responseJson = await response.json();
-      setT16(responseJson.Mega6.split(","));
-      response = await fetch('https://fir-test-4dae1.firebaseio.com/Table 2.json');await wait(1000);
-      responseJson = await response.json();
-      setT2(responseJson.MegaHostel.split(","));
-      response = await fetch('https://fir-test-4dae1.firebaseio.com/Table 3.json');await wait(1000);
-      responseJson = await response.json();
-      setT3(responseJson.SOMS.split(","));
-
-  }catch(error){
-    console.log(error);
-  }
-}
 
 
+
+
+    async function retrieve2()
+    {
+        try {
+            let response = await fetch('https://fir-test-4dae1.firebaseio.com/sidTab2.json');
+            let res = await response.json();
+
+           var temp=[];
+
+          for (let i = 0; i < res.length; ++i) {
+             temp.push(res[i].split(","));
+          }
+          //transposing to set data adequately
+          var newArray = [];
+          for(var i = 0; i < temp[0].length; i++){
+              newArray.push([]);
+          };
+
+          for(var i = 0; i < temp[0].length; i++){
+              for(var j = 0; j < temp.length; j++){
+                newArray[i][j]=temp[j][i];
+            }
+          };
+          //console.log(newArray);
+              setTable2(newArray);
+            //console.log(temp);
+            return res.user;
+          } catch (error) {
+            console.error(error);
+          }
+
+    }
+
+
+  retrieve();
+  retrieve2();
 
 return (
-        <View style={styles.container} onLayout={()=>{select()}}>
-          <Text style={{fontSize:25,fontWeight: 'bold',color:"green"}}>                          Route 1 - Bus 1</Text>
-          <View
+        <View style={styles.container}>
+          <Text style={{fontSize:20,fontWeight: 'bold',color:"white"}}>                             Route 1 - Bus 1</Text>
+          <View style={{height:hp("23%"),width:wp("90%")}}>
+<Text style={{fontWeight: 'bold',color:"white"}}>        from Mega      |  from Mega |  from Mega |  from Mega |  from Mega </Text>
+<FlatList
+          data={tab}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={{
+                 height: 30, borderRadius: 15, backgroundColor: 'green'
+            }}>
+           <View style={{ backgroundColor: '#5dbccf' }}>
+              <Text>    {item[0]}   |   {item[1]}   |   {item[2]}   |   {item[3]}   |   {item[4]}   </Text>
+              <View
             style={{
-              borderBottomColor: 'green',
+              borderBottomColor: 'black',
               borderBottomWidth: 1,
             }}
           />
-          <Text style={{fontWeight: 'bold',color:"green"}}>  from Mega      |         from Mega          |          from Mega          |         from Mega   </Text>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection:'row'}}>
-          <Text style={{color:"green"}}>    {t11[1]}          |           {t11[2]}           |             {t11[3]}             |            {t11[4]}   </Text>
           </View>
+            </View>
+          )}
+        />
+        </View>
+
+          <Text style={{fontSize:20,fontWeight: 'bold',color:"white"}}>                 Evening Route - Circular Route</Text>
+          <View style={{height:hp("22%"),width:wp("90%")}}>
+          <Text style={{fontWeight: 'bold',color:"white"}}>                      Mega Hostel                        |                        SOMS                    </Text>
           <View
             style={{
-              borderBottomColor: 'green',
+              borderBottomColor: 'black',
               borderBottomWidth: 1,
             }}
           />
-          <View style={{flexDirection:'row'}}>
-          <Text style={{color:"green"}}>    {t12[1]}          |           {t12[2]}           |             {t12[3]}             |            {t12[4]}   </Text>
+            <Text style={{fontWeight: 'bold',color:"white"}}>                   (Evening Route1)                 |                       (EveningRoute2)           </Text>
+            <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}
+          />
+
+<FlatList
+          data={tab2}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={{
+                height: 30, borderRadius: 15, backgroundColor: 'green'
+           }}>
+
+           <View style={{ backgroundColor: '#5dbccf' }}>
+              <Text>                      {item[0]}                               |                      {item[1]}                              </Text>
+              <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}
+          />
           </View>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection:'row'}}>
-          <Text style={{color:"green"}}>    {t13[1]}          |           {t13[2]}           |             {t13[3]}             |            {t13[4]}   </Text>
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection:'row'}}>
-          <Text style={{color:"green"}}>    {t14[1]}          |           {t14[2]}           |             {t14[3]}             |            {t14[4]}   </Text>
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection:'row'}}>
-          <Text style={{color:"green"}}>    {t15[1]}          |           {t15[2]}             |              {t15[3]}            |            {t15[4]}   </Text>
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection:'row'}}>
-          <Text style={{color:"green"}}>    {t16[1]}        |           {t16[2]}             |             {t16[3]}             |            {t16[4]}   </Text>
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <Text></Text>
-          <Text></Text>
-          
-          <Text style={{fontSize:25,fontWeight: 'bold',color:"green"}}>            Evening Route - Circular Route</Text>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <Text style={{fontWeight: 'bold',color:"green"}}>                      Mega Hostel                         |                               SOMS           </Text>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <Text style={{color:"green"}}>                           {t2[1]}                             |                           {t3[1]}                    </Text>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <Text style={{color:"green"}}>                           {t2[2]}                             |                           {t3[2]}                    </Text>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <Text style={{color:"green"}}>                           {t2[3]}                             |                           {t3[3]}                    </Text>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <Text style={{color:"green"}}>                           {t2[4]}                             |                           {t3[4]}                    </Text>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <Text style={{color:"green"}}>                           {t2[5]}                             |                           {t3[5]}                    </Text>
-          <View
-            style={{
-              borderBottomColor: 'green',
-              borderBottomWidth: 1,
-            }}
-          />
-          <Text></Text>
-          <View style={{justifyContent:"center",alignContent:"center",flex:1}}>
+            </View>
+          )}
+        />
+        </View>
+        <View style={{paddingBottom:"42%"}}></View>
+          <View style={{justifyContent:"center",alignContent:"center",flex:1,paddingBottom:"32%"}}>
           <ImageZoom cropWidth={Dimensions.get('window').width}
                        cropHeight={Dimensions.get('window').height}
                        imageWidth={290}
@@ -195,9 +151,11 @@ return (
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: 'black' },
-    head: { height: 40, backgroundColor: '#f1f8ff' },
+    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff',backgroundColor:"black" },
+    head: { height: 20, backgroundColor: '#f1f8ff' },
     text: { margin: 6 }
   });
 
 export default BusSchedule;
+
+// ,transform: [{ rotate: '90deg'}]

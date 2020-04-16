@@ -3,6 +3,8 @@ import { Dimensions, StyleSheet,View,Button,Text } from 'react-native';
 import MapView, {Marker,PROVIDER_GOOGLE} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Card from '../components/Card';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -24,37 +26,52 @@ class Example extends Component {
     var flg=0;
     var tlt=0;
     var tlg=0;
+    // console.log("value of f");
+    // console.log(f.split(",")[0]);
+    // console.log(f.split(",")[1]);
+
+    // 
+
+    if(f.includes(",") == true){
+        flt = parseFloat(f.split(",")[0]);
+        flg = parseFloat(f.split(",")[1]);
+    }
+
+    // if(f.includes(",") == true){
+    //     flt = f.split(",")[0]
+    //     flg = f.split(",")[1]
+    // }
 
     if(f == "")
       f = t;
     if(t == "")
       t = f;
 
-    if((f == "Central Library" && t == "NLHC")||(f == "NLHC" && t == "Central Library") && tr == "Walk"){
+    if(((f == "Central Library" && t == "ELHC")||(f == "ELHC" && t == "Central Library")) && tr == "Walk"){
         props.navigation.navigate('StaticMapImage',{f,t});
     }
-    else if((f == "Central Library" && t == "SSL")||(f == "SSL" && t == "Central Library") && tr == "Walk"){
+    else if(((f == "Central Library" && t == "SSL")||(f == "SSL" && t == "Central Library")) && tr == "Walk"){
         props.navigation.navigate('StaticMapImage',{f,t});
     }
-    else if((f == "Main Building" && t == "NLHC")||(f == "NLHC" && t == "Main Building") && tr == "Walk"){
+    else if(((f == "Main Building" && t == "ELHC")||(f == "ELHC" && t == "Main Building")) && tr == "Walk"){
       props.navigation.navigate('StaticMapImage',{f,t});
     }
-    else if((f == "Main Building" && t == "Central Library")||(f == "Central Library" && t == "Main Building") && tr == "Walk"){
+    else if(((f == "Main Building" && t == "Central Library")||(f == "Central Library" && t == "Main Building")) && tr == "Walk"){
       props.navigation.navigate('StaticMapImage',{f,t});
     }
-    else if((f == "Main Building" && t == "Micro Canteen")||(f == "Micro Canteen" && t == "Main Building") && tr == "Walk"){
+    else if(((f == "Main Building" && t == "Micro Canteen")||(f == "Micro Canteen" && t == "Main Building")) && tr == "Walk"){
       props.navigation.navigate('StaticMapImage',{f,t});
     }
-    else if((f == "Main Building" && t == "SSL")||(f == "SSL" && t == "Main Building") && tr == "Walk"){
+    else if(((f == "Main Building" && t == "SSL")||(f == "SSL" && t == "Main Building")) && tr == "Walk"){
       props.navigation.navigate('StaticMapImage',{f,t});
     }
-    else if((f == "Micro Canteen" && t == "NLHC")||(f == "NLHC" && t == "Micro Canteen") && tr == "Walk"){
+    else if(((f == "Micro Canteen" && t == "ELHC")||(f == "ELHC" && t == "Micro Canteen")) && tr == "Walk"){
       props.navigation.navigate('StaticMapImage',{f,t});
     }
-    else if((f == "Micro Canteen" && t == "SSL")||(f == "SSL" && t == "Micro Canteen") && tr == "Walk"){
+    else if(((f == "Micro Canteen" && t == "SSL")||(f == "SSL" && t == "Micro Canteen")) && tr == "Walk"){
       props.navigation.navigate('StaticMapImage',{f,t});
     }
-
+//NLHC
     else{
         if(f == "AHostel"){
             flt = 11.321740;
@@ -184,9 +201,9 @@ class Example extends Component {
             flt = 11.318643;
             flg = 75.931723;
         }
-        if(f == "NLHC"){
-            flt = 11.321917;
-            flg = 75.932965;
+        if(f == "ELHC"){
+            flt = 11.322543;
+            flg = 75.933828;
         }
         if(f == "Auditorium"){
             flt = 11.322570;
@@ -388,9 +405,9 @@ class Example extends Component {
             tlt = 11.318643;
             tlg = 75.931723;
         }
-        if(t == "NLHC"){
-            tlt = 11.321917;
-            tlg = 75.932965;
+        if(t == "ELHC"){
+            tlt = 11.322543;
+            tlg = 75.933828;
         }
         if(t == "Auditorium"){
             tlt = 11.322570;
@@ -477,6 +494,7 @@ class Example extends Component {
       routeDest:"",
       lt:0,
       lg:0,
+      tmode:tr,
       coordinates: [
         {
           latitude: flt,
@@ -548,13 +566,13 @@ class Example extends Component {
             strokeColor="hotpink"
             optimizeWaypoints={true}
             onStart={(params) => {
-              console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+            //   console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
             }}
             onReady={result => {
               this.setState({dist:result.distance})
-              this.setState({dur:result.duration})
-              console.log(`Distance: ${result.distance} km`)
-              console.log(`Duration: ${result.duration} min.`)
+              this.setState({dur:this.state.tmode === "Walk"?result.duration*3:result.duration})
+            //   console.log(`Distance: ${result.distance} km`)
+            //   console.log(`Duration: ${result.duration} min.`)
 
               this.mapView.fitToCoordinates(result.coordinates, {
                 edgePadding: {
@@ -571,10 +589,10 @@ class Example extends Component {
           />
         )}
       </MapView>
-      <Card style={styles.inputContainer}>
+      <Card style={styles.inputContainer1}>
           <Text style={{fontWeight:"bold"}}>Distance : {this.state.dist} km</Text>
-          <Text style={{fontWeight:"bold"}}>Duration(Vehicle) : {this.state.dur} min</Text>
-            <Button color="green" title="Back" onPress={()=>{this.props.navigation.navigate('TakeMeThere')}}/>
+          <Text style={{fontWeight:"bold"}}>Duration({this.state.tmode}) : {this.state.dur.toFixed(2)} min</Text>
+            <Button color="green" title="Back" onPress={()=>{this.props.navigation.navigate('NITC_TakeMeThere')}}/>
         </Card>
       </View>
     );
@@ -593,7 +611,7 @@ var styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'flex-end',
       backgroundColor:"black",
-      height:"100%"
+      height:hp("100%")
   },
     map: {
       position:'absolute',
@@ -601,17 +619,16 @@ var styles = StyleSheet.create({
       left:0,
       right:0,
       bottom:0,
-      height:"100%"
+      height:hp("100%")
     }
     ,
-inputContainer: {
-  width:350,
-  height:130,
-  maxWidth: '80%',
-  fontSize:20,
- 
- 
-}
+    inputContainer1: {
+      width:wp("70%"),
+      height:hp("20%"),
+      fontSize:20,
+     
+     
+  }
 });
 
 export default Example;

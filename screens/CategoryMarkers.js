@@ -5,12 +5,12 @@ import { Props } from 'react-native-image-zoom-viewer/built/image-viewer.type';
 import MapView,{PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import { render } from 'react-dom';
 import Card from '../components/Card';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 class TakeMeThere extends Component {
     constructor(props){
         super(props);        
-
     this.state = {
         c : "AtM",
         ATM:[
@@ -281,6 +281,7 @@ class TakeMeThere extends Component {
           )}
           </MapView>
           <Card style={styles.inputContainer}>
+          {/* <Text>{}</Text> */}
             <Button color="green" title="Back" onPress={()=>{this.props.navigation.navigate('ExploreCampus')}}/>
         </Card>
       </View>
@@ -299,7 +300,7 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
         backgroundColor:"black",
-        height:"100%"
+        height:hp("100%")
     },
       map: {
         position:'absolute',
@@ -307,13 +308,13 @@ var styles = StyleSheet.create({
         left:0,
         right:0,
         bottom:0,
-        height:"100%"
+        height:hp("100%")
       }
       ,
   inputContainer: {
-    width:350,
-    height:90,
-    maxWidth: '80%',
+    width:wp("80%"),
+    height:hp("20%"),
+    maxWidth: wp('80%'),
     fontSize:20,
    
    

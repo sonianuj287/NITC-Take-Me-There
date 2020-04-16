@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View,Text,Button } from 'react-native';
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Card from '../components/Card';
 
 const DashBoard = props => {
@@ -8,10 +8,10 @@ const DashBoard = props => {
       
     <View style = {styles.container}>
             <Card style={styles.inputContainer}>
-            <View style={{height:"25%"}}></View>
-                <Button title="Edit Bus Schedule"  onPress={()=>{props.navigation.navigate('editbus')}}  color = "green" />
-                <View style={{height:"35%"}}></View>
-                <Button title="Edit Path"   color = "green" onPress={()=>{props.navigation.navigate('editpath')}}/>
+            <View style={{height:hp("10%")}}></View>
+                <Button title="Edit Bus Schedule"  onPress={()=>{props.navigation.navigate('ManageBusSchedule')}}  color = "green" />
+                <View style={{height:hp("12%")}}></View>
+                <Button title="Edit Path"   color = "green" onPress={()=>{props.navigation.navigate('ManagePath')}}/>
             </Card>
             
             <Card style={styles.inputContainer1}>
@@ -34,26 +34,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     backgroundColor:"black",
-    height:"100%",
+    height:hp("110%"),
 },
-    input:{
-        borderBottomColor:'black',
-        borderWidth:1,
-        width:240,
-        height:33,
-        padding:10
-    },
     inputContainer: {
-      width:350,
-      height:300,
-      maxWidth: '90%',
+      width:wp("80%"),
+      height:hp("40%"),
       fontSize:20,
       marginBottom:"30%"     
   },
   inputContainer1: {
-    width:350,
-    height:110,
-    maxWidth: '80%',
+    width:wp("70%"),
+    height:hp("25%"),
     fontSize:20,
    
    

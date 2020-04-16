@@ -1,8 +1,9 @@
 import React,{useState} from 'react';
 import {View,Text,StyleSheet, Button,Picker} from 'react-native';
-import {Card} from 'react-native-elements';
+import Card from '../components/Card';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Props } from 'react-native-image-zoom-viewer/built/image-viewer.type';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const ExploreCampus = props => {
     const[to,setTo] = useState('');
@@ -448,9 +449,8 @@ let data = [{
 
     // console.log(cat);
     return(
-        <View style={{backgroundColor:"black",height:"100%"}} onLayout={()=>{Location()}}>
-            <View style={{height:"20%"}}></View>
-            <Card>
+        <View style={styles.container} onLayout={()=>{Location()}}>
+            <Card style={styles.inputContainer}>
             <Text></Text>
 
             <View style={{opacity:op,height:op}}>
@@ -489,13 +489,13 @@ let data = [{
             <Text></Text>
             <Text></Text>
             <Text></Text>
-            <Button color="green" title="Next" onPress={()=>{swapper()}}/>
+            <Button color="green" title="Next" onPress={()=>{swapper()}} disabled={cat==''} disabled={to!=''} />
             <Text></Text>
             <Button color="green" title="Back" onPress={()=>{reset()}} disabled={cat==''}/>
             <Text></Text>
-            <Button color="green" title="show on map" onPress={()=>{props.navigation.navigate('CategoryMarkers',{cat})}}/>
+            <Button color="green" title="show on map" onPress={()=>{props.navigation.navigate('CategoryMarkers',{cat})}} disabled={cat==''}/>
             <Text></Text>
-            <Button color="green" title="Get on Take Me There" onPress={() =>{props.navigation.navigate('TakeMeThere',{to})} } />
+            <Button color="green" title="Get on Take Me There" onPress={() =>{props.navigation.navigate('NITC_TakeMeThere',{to})}} disabled={cat==''} disabled={to==''} />
             </Card>
             
         </View>
@@ -503,7 +503,23 @@ let data = [{
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        position:'absolute',
+        top:0,
+        left:0,
+        right:0,
+        bottom:0,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        backgroundColor:"black",
+        height:hp("100%"),
+    },
+        inputContainer: {
+          width:wp("80%"),
+          height:hp("45%"),
+          fontSize:20,
+          marginBottom:"70%"     
+      }
 })
 
 export default ExploreCampus;

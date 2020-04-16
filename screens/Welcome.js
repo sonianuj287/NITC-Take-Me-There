@@ -1,13 +1,14 @@
 import React,{useState} from 'react';
 import {View,Text,StyleSheet,Image,Picker,TextInput,Button,TouchableOpacity} from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 const Welcome = props =>{
     const[cat,setCat] = useState('');
 
     return(
-        <View style={{backgroundColor:"black",height:"100%",width:"100%"}}>
+        <View style={{backgroundColor:"black",height:hp("110%"),width:wp("100%")}}>
             <View style={{height:"5%"}}></View>
                 <View style={{flexDirection:"row",paddingLeft:"3%"}}>
                   <TouchableOpacity onPress={()=>{props.navigation.navigate('Login')}}>

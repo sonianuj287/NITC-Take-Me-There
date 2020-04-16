@@ -78,7 +78,7 @@ export default App;
 
 const MapInputStackNavigator = createStackNavigator(
   {
-        TakeMeThere: MapInputScreen,
+        NITC_TakeMeThere: MapInputScreen,
         Map: MapScreen,
         StaticMapImage: StaticImageScreen,
   },
@@ -202,12 +202,12 @@ const SavedPlacesStackNavigator = createStackNavigator(
   )
   const EditBusNavigator = createStackNavigator(
     {
-        editbus: EditBusSchedule
+        ManageBusSchedule: EditBusSchedule
     }
 )
 const EditPathNavigator = createStackNavigator(
     {
-        editpath:EditPath
+        ManagePath:EditPath
     }
 )
 

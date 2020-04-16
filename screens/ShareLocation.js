@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Geocoder from 'react-native-geocoding';
 import * as Location from 'expo-location';
-import { StyleSheet, Text, View , TextInput,Button,Share} from 'react-native';
+import { StyleSheet, Text, View , TextInput,Button,Share, Alert} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Card from '../components/Card';
+import * as Permissions from 'expo-permissions';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
  
 Geocoder.init("AIzaSyAeicbYZGwVCg70Ld-9mMDhUn1a0q4FPBo");
@@ -16,20 +18,30 @@ export default class App extends React.Component {
         lt:0,
         lg:0,
         url:"https://expo.io/@cupcake287/NITC-Take-me-There",
-        add:""
+        add:"",
     };  
 }
-async componentDidMount(){
-    const location = await Location.getCurrentPositionAsync({});
-    const co = location.coords; 
-    this.setState({lt:co.latitude});
-    this.setState({lg:co.longitude});
-    this.setState({loc:location.coords});
-    const response = await Geocoder.from(location.coords.latitude,location.coords.longitude);
-    const address = response.results[0].formatted_address;
-    this.setState({add:address});
-  };
 
+
+async componentDidMount(){
+  let { status } = await Permissions.askAsync(Permissions.LOCATION);
+  if (status !== 'granted') {
+    this.setState({
+      locationResult: 'Permission to access location was denied',
+    });
+  } else {
+    this.setState({ hasLocationPermissions: true });
+  }
+      const location = await Location.getCurrentPositionAsync({});
+      const co = location.coords; 
+      this.setState({lt:co.latitude});
+      this.setState({lg:co.longitude});
+      this.setState({loc:location.coords});
+      const response = await Geocoder.from(location.coords.latitude,location.coords.longitude);
+      const address = response.results[0].formatted_address;
+      this.setState({add:address});
+    
+  };
 
 
   onRegionChange(region) {
@@ -70,7 +82,7 @@ async componentDidMount(){
           />
         </MapView>
         <Card style={styles.inputContainer}>
-            <Text style={{fontSize:20,fontWeight:"bold"}}>{this.state.add}</Text>
+            <Text style={{fontSize:15,fontWeight:"bold"}}>{this.state.add}</Text>
             <Button color="green" title="Share" onPress={onSharePress}/>
         </Card>
       </View>
@@ -88,7 +100,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     backgroundColor:"black",
-    height:"100%"
+    height:hp("100%")
   },
   map: {
     position:'absolute',
@@ -96,12 +108,11 @@ const styles = StyleSheet.create({
     left:0,
     right:0,
     bottom:0,
-    height:"100%"
+    height:hp("100%")
   },
   inputContainer: {
-    width:350,
-    height:150,
-    maxWidth: '80%',
+    width:wp("70%"),
+    height:hp("25%"),
     fontSize:20,
    
    

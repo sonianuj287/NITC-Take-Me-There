@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {View,Text, StyleSheet, Button,TextInput,Alert } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import Card from '../components/Card';
 import Colors from '../Constants/Color';
@@ -62,31 +63,29 @@ const Login = props => {
 
 const styles = StyleSheet.create({
     container: {
-        position:'absolute',
-        top:0,
-        left:0,
-        right:0,
-        bottom:0,
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        backgroundColor:"black",
-        height:"100%",
-    },
-    inputContainer: {
-      width:350,
-      height:300,
-      maxWidth: '90%',
-      fontSize:20,
-      marginBottom:"50%"     
+      position:'absolute',
+      top:0,
+      left:0,
+      right:0,
+      bottom:0,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      backgroundColor:"black",
+      height:hp("110%"),
   },
-  inputContainer1: {
-    width:350,
-    height:110,
-    maxWidth: '80%',
-    fontSize:20,
-   
-   
-}
-});
+      inputContainer: {
+        width:wp("80%"),
+        height:hp("40%"),
+        fontSize:20,
+        marginBottom:"30%"     
+    },
+    inputContainer1: {
+      width:wp("70%"),
+      height:hp("25%"),
+      fontSize:20,
+     
+     
+  }
+  });
 
 export default Login;
