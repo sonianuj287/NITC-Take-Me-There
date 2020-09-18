@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text,Button,StyleSheet } from 'react-native';
+import { View,Text,Button,StyleSheet,Image } from 'react-native';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import Colors from '../Constants/Color';
@@ -8,6 +8,11 @@ const UsersSwitch = props => {
     return ( 
     <View>
         <Header title="Users Switch" />
+        <Text></Text>
+        <View style={{flexDirection:'row'}}>
+            <Text>                                     </Text>
+        <Image source = {require('D:/games/[FreeCourseLab.com] Udemy - React Native - The Practical Guide/NITC-Take-Me-There/StaticImages/logo1.jpg')} style = {{ width: 210, height: 180,borderRadius: 20 }} />
+        </View>
         <View style={styles.screen}>
             <Card style={styles.inputContainer}>
                
@@ -19,11 +24,17 @@ const UsersSwitch = props => {
                     </View>
                     <View style={styles.button}>
                         <Button color={Colors.primary} title = "USER" onPress={() => {
-                            props.navigation.navigate({routeName:'map'}); 
+                            props.navigation.navigate({routeName:'mapInput'}); 
                             }}/>
+                    </View>
+                    <View style={styles.button}>
+                        {/* <Button color={Colors.primary} title = "about" onPress={()=>{props.navigation.navigate('about')}}/> */}
+                        
                     </View>
                 </View>
             </Card>
+            <Text></Text>
+            <Button color={Colors.primary} title = "about" onPress={()=>{props.navigation.navigate('about')}}/>
         </View>
     </View>
     );
@@ -32,7 +43,7 @@ const UsersSwitch = props => {
 const styles = StyleSheet.create({
     screen:{
        
-        paddingTop: 140,
+        paddingTop: 50,
         alignItems: 'center'
     },
     inputContainer: {
